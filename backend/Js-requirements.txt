@@ -1,0 +1,19 @@
+# ---- Core Web & API Server ----
+fastapi==0.110.0
+uvicorn==0.28.0
+python-multipart==0.0.9
+pydantic==2.6.4
+
+# ---- Computer Vision & AI ----
+opencv-python-headless==4.9.0.80
+ultralytics==8.1.24
+numpy==1.26.4
+
+# ---- Database & Storage ----
+# (SQLite มีแถมมากับ Python อยู่แล้ว ไม่ต้องลงเพิ่ม)
+sqlalchemy==2.0.28
+sqlmodel==0.0.16
+
+# ---- Utilities ----
+python-dotenv==1.0.1
+requests==2.31.0
