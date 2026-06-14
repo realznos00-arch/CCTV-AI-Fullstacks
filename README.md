@@ -2,16 +2,72 @@
 
 Production-ready full-stack CCTV surveillance AI system with real-time video processing, event detection, and analytics.
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Data Flow
 
-**4-Phase Event Processing Pipeline:**
-
-| Phase | Module | Input | Output |
-|-------|--------|-------|--------|
-| 1. Observation | `phase1_observation.py` | Video frames | `phase1_candidates.json` |
-| 2. Filtering | `phase2_filter.py` | Candidates | `phase2_decisions.json` |
-| 3. Derivation | `phase3_derivation.py` | Filtered events | `phase3_events.json` |
-| 4. Storage | `phase4_storage.py` | Derived events | `phase4_events.db`, `phase4_events.jsonl` |
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      CCTV VIDEO INPUT                           │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ↓
+        ┌────────────────────────────────────────┐
+        │   LAYER 1: OBSERVATION (Detection)    │
+        │   phase1_observation.py                │
+        │   - Frame analysis                     │
+        │   - Entity detection                   │
+        └────────────────────────────────────────┘
+                             │
+                             ↓
+                    phase1_candidates.json
+                             │
+                             ↓
+        ┌────────────────────────────────────────┐
+        │     LAYER 2: FILTERING (Decision)      │
+        │     phase2_filter.py                   │
+        │     - False positive reduction          │
+        │     - Rule-based filtering             │
+        └────────────────────────────────────────┘
+                             │
+                    ┌────────┴────────┐
+                    ↓                 ↓
+          phase2_decisions.json   phase2_filter_results.json
+                    │                 │
+                    └────────┬────────┘
+                             ↓
+        ┌────────────────────────────────────────┐
+        │   LAYER 3: DERIVATION (Synthesis)      │
+        │   phase3_derivation.py                 │
+        │   - Event extraction                   │
+        │   - Pattern recognition (LSTM)         │
+        └────────────────────────────────────────┘
+                             │
+                    ┌────────┴────────┐
+                    ↓                 ↓
+          phase3_events.json     phase3_derivation_results.json
+                    │                 │
+                    └────────┬────────┘
+                             ↓
+        ┌────────────────────────────────────────┐
+        │   LAYER 4: STORAGE (Persistence)       │
+        │   phase4_storage.py                    │
+        │   - Database persistence               │
+        │   - Log streaming                      │
+        └────────────────────────────────────────┘
+                    │
+         ┌──────────┼──────────┐
+         ↓          ↓          ↓
+    SQLite DB   JSONL Log  Analytics
+    (Queries)  (Streaming) (Heatmaps)
+         │          │          │
+         └──────────┼──────────┘
+                    ↓
+        ┌────────────────────────────────────────┐
+        │   FRONTEND LAYER (Dashboard)           │
+        │   Next.js + TypeScript                 │
+        │   - Real-time visualization            │
+        │   - Event management                   │
+        └────────────────────────────────────────┘
+```
 
 ## 🛠️ Tech Stack
 
@@ -19,7 +75,17 @@ Production-ready full-stack CCTV surveillance AI system with real-time video pro
 - **Frontend:** TypeScript/Next.js (8.4%)
 - **AI/ML:** YOLOv8 Pose Detection, LSTM Networks
 - **Storage:** SQLite + JSONL
-- **Video Processing:** Real-time synchronized/compressed inference
+- **Processing:** Real-time synchronized/compressed inference
+
+## 📊 Layer Details
+
+| Layer | Module | Input | Process | Output |
+|-------|--------|-------|---------|--------|
+| **1** | `phase1_observation.py` | Video frames | Detection | `phase1_candidates.json` |
+| **2** | `phase2_filter.py` | Candidates | Filtering | `phase2_decisions.json` |
+| **3** | `phase3_derivation.py` | Filtered events | Synthesis | `phase3_events.json` |
+| **4** | `phase4_storage.py` | Events | Persistence | `phase4_events.db`, `.jsonl` |
+| **5** | Frontend (Next.js) | Database | Visualization | Dashboard UI |
 
 ## 🚀 Quick Start
 
@@ -37,37 +103,17 @@ npm install && npm run dev
 # Open http://localhost:3000
 ```
 
-## 📊 Key Components
+## 📁 Key Components
 
-- **Video Inference:** `infer-vid-w7-sync.py` (synchronized), `infer-vid-w7-compress.py` (optimized)
+- **Video Inference:** `infer-vid-w7-sync.py`, `infer-vid-w7-compress.py`
 - **AI Models:** `yolo26n-pose.pt` (7.9MB), `lstm_model/` (temporal patterns)
-- **Analytics:** Heatmap generation (`heatmap_phase1-4.py`)
-- **Performance:** `time.py` for benchmarking
-
-## 📁 Project Structure
-
-```
-├── backend/                          # Python backend
-├── frontend/                         # Next.js UI
-├── lstm_model/                       # LSTM models
-├── phase1_observation.py             # Detection
-├── phase2_filter.py                  # Filtering
-├── phase3_derivation.py              # Event extraction
-├── phase4_storage.py                 # Persistence
-├── infer-vid-w7-sync.py              # Sync inference
-├── infer-vid-w7-compress.py          # Compressed inference
-├── heatmap_phase1-4.py               # Spatial analysis
-└── yolo26n-pose.pt                   # Pose model
-```
+- **Analytics:** `heatmap_phase1-4.py` (spatial analysis)
+- **Performance:** `time.py` (benchmarking)
 
 ## 💾 Data Storage
 
-- **SQLite** (`phase4_events.db`) - Structured queries
+- **SQLite** (`phase4_events.db`) - Structured queries, analytics
 - **JSONL** (`phase4_events.jsonl`) - Log streaming, integrations
-
-## 📝 License
-
-Private repository. Contact owner for access.
 
 ---
 
