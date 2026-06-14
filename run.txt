@@ -1,0 +1,14 @@
+phase1_observation.py
+
+python phase1_observation.py --input "C:\Users\ASUS\Videos\Video-test\15574390_3840_2160_50fps.mp4" --model "C:\Users\ASUS\Documents\AI\lstm_model\model-2-conf.pt" --mode 2
+python phase1_observation.py --input "C:\Users\ASUS\Videos\Video-test\15574390_3840_2160_50fps.mp4" --mode 2      
+
+
+phase2_filter.py 
+
+python phase2_filter.py --input "C:\Users\ASUS\Videos\Video-test\15574390_3840_2160_50fps.mp4"  --mode 2
+
+phase3_derivation.py
+
+
+python phase3_derivation.py --input "C:\Users\ASUS\Videos\Video-test\15574390_3840_2160_50fps.mp4"  --mode 2
