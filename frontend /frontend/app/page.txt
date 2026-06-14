@@ -1,0 +1,21 @@
+const MODES: ModeConfig[] = [
+  {
+    id:      "full",
+    label:   "Full Precision Analysis",
+    tagline: "Every frame processed — maximum accuracy",
+    detail:  "YOLO runs on every frame. LSTM fires every eligible window. No frames dropped. Best for short clips or when accuracy is critical.",
+    color:   "#2563eb",
+    accent:  "#eff6ff",
+    border:  "#bfdbfe",
+    warning: "Full Precision processes every frame sequentially. This can take several minutes on long or high-resolution videos.",
+  },
+  {
+    id:      "compressed",
+    label:   "Fast Compressed Analysis",
+    tagline: "Frame-skip + LSTM cadence — significantly faster",
+    detail:  "YOLO runs every 5th frame; detections are reused in between. LSTM fires every 4th eligible window. Frames are skipped under queue pressure. Best for long recordings where speed matters more than per-frame precision.",
+    color:   "#ca8a04",
+    accent:  "#fefce8",
+    border:  "#fde68a",
+    warning: "Compressed mode skips frames and reuses detections. Some fast-moving events between keyframes may be missed. Suitable for long-duration surveillance footage.",
+  },
