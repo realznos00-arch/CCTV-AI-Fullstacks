@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World CV (Shortcut)</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 20px;">
+    <h1>Hello World (CV + Plain HTML Stack)</h1>
+    <button onclick="startCamera()">1. เปิดกล้อง</button>
+    <br><br>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <div>
+            <h3>กล้องสด</h3>
+            <video id="video" autoplay playsinline width="320" height="240" style="background:#000;"></video>
+            <br><br>
+            <button onclick="captureAndSend()">2. ส่งเฟรมไปประมวลผล</button>
+        </div>
+        <div>
+            <h3>ผลลัพธ์จาก Backend</h3>
+            <img id="result" width="320" height="240" style="background:#ccc; display:none;">
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        async function startCamera() {
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        }
+
+        function captureAndSend() {
+            let canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            canvas.toBlob(async (blob) => {
+                let formData = new FormData();
+                formData.append('file', blob, 'frame.jpg');
+
+                let response = await fetch('http://localhost:8000/hello-cv', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let imageBlob = await response.blob();
+                let resultImg = document.getElementById('result');
+                resultImg.src = URL.createObjectURL(imageBlob);
+                resultImg.style.display = 'block';
+            }, 'image/jpeg');
+        }
+    </script>
+</body>
+</html>
