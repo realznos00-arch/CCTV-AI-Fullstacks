@@ -1,0 +1,200 @@
+{
+  "rule_pass_rates": {
+    "type": "bars",
+    "title": "Phase 2 \u2014 Filter rule pass rates",
+    "rows": [
+      "LOW_COMPOSITE_SCORE",
+      "POOR_POSE_QUALITY",
+      "UNSTABLE_TRACKING",
+      "NO_ZONE_CONTACT",
+      "COOLDOWN_ACTIVE",
+      "DUPLICATE_TRACK_ZONE"
+    ],
+    "values": [
+      100.0,
+      87.9,
+      98.9,
+      100.0,
+      67.6,
+      100.0
+    ],
+    "raw_fire_counts": {
+      "LOW_COMPOSITE_SCORE": 0,
+      "POOR_POSE_QUALITY": 22,
+      "UNSTABLE_TRACKING": 2,
+      "NO_ZONE_CONTACT": 0,
+      "COOLDOWN_ACTIVE": 59,
+      "DUPLICATE_TRACK_ZONE": 0
+    },
+    "total_evaluated": 182,
+    "color": "#16a34a",
+    "note": "Pass rate = fraction of candidates where this rule did not fire. Includes soft-rule fires on PROMOTED candidates in permissive mode."
+  },
+  "suppress_reason_breakdown": {
+    "type": "bars",
+    "title": "Phase 2 \u2014 Suppression reasons (SUPPRESSED candidates only)",
+    "rows": [
+      "COOLDOWN_ACTIVE",
+      "POOR_POSE_QUALITY",
+      "UNSTABLE_TRACKING"
+    ],
+    "values": [
+      59,
+      22,
+      2
+    ],
+    "pct": [
+      71.1,
+      26.5,
+      2.4
+    ],
+    "raw": {
+      "COOLDOWN_ACTIVE": 59,
+      "POOR_POSE_QUALITY": 22,
+      "UNSTABLE_TRACKING": 2
+    },
+    "color": "#dc2626",
+    "note": "Counts are from SUPPRESSED decisions only. Soft-rule fires on PROMOTED candidates are excluded (see audit log)."
+  },
+  "composite_score_dist": {
+    "type": "histogram_dual",
+    "title": "Phase 2 \u2014 Composite score distribution (promoted vs suppressed)",
+    "labels": [
+      "0.0\u20130.1",
+      "0.1\u20130.2",
+      "0.2\u20130.3",
+      "0.3\u20130.4",
+      "0.4\u20130.5",
+      "0.5\u20130.6",
+      "0.6\u20130.7",
+      "0.7\u20130.8",
+      "0.8\u20130.9",
+      "0.9\u20131.0"
+    ],
+    "promoted_values": [
+      0,
+      0,
+      0,
+      0,
+      43,
+      24,
+      17,
+      19,
+      3,
+      0
+    ],
+    "suppressed_values": [
+      0,
+      0,
+      0,
+      0,
+      28,
+      20,
+      6,
+      13,
+      8,
+      1
+    ],
+    "x_label": "composite_score [0..1]",
+    "y_label": "candidate count",
+    "color_promoted": "#16a34a",
+    "color_suppressed": "#dc2626",
+    "note": "composite_score is a derived convenience field. ConfidenceProfile (4-dim) is the primary record."
+  },
+  "action_dist_heatmap": {
+    "type": "grid",
+    "title": "Phase 2 \u2014 Mean action probability by filter verdict",
+    "rows": [
+      "run",
+      "sit",
+      "stand",
+      "walk"
+    ],
+    "cols": [
+      "PROMOTED",
+      "SUPPRESSED"
+    ],
+    "values": [
+      [
+        0.183,
+        0.1895
+      ],
+      [
+        0.2954,
+        0.4013
+      ],
+      [
+        0.2346,
+        0.2003
+      ],
+      [
+        0.1692,
+        0.1422
+      ]
+    ],
+    "legend": [
+      "Low prob",
+      "High prob"
+    ],
+    "ramp": [
+      "#f0fdf4",
+      "#86efac",
+      "#22c55e",
+      "#15803d",
+      "#14532d"
+    ],
+    "note": "Uses full class_probs vectors \u2014 NOT top_label. Each cell = mean probability mass for that action class in that verdict group."
+  },
+  "zone_filter_rates": {
+    "type": "bars",
+    "title": "Phase 2 \u2014 Promotion rate per zone",
+    "rows": [
+      "__no_zone__"
+    ],
+    "values": [
+      58.2
+    ],
+    "raw_totals": {
+      "__no_zone__": 182
+    },
+    "raw_promoted": {
+      "__no_zone__": 106
+    },
+    "color": "#0284c7",
+    "note": "Zone axis uses zone_id strings only. No zone_type semantics applied."
+  },
+  "latency_timeline": {
+    "type": "timeline",
+    "title": "Phase 2 \u2014 Filter throughput (decisions per time window)",
+    "labels": [
+      "+0.0 s",
+      "+11.4 s",
+      "+22.7 s",
+      "+34.1 s",
+      "+45.4 s",
+      "+56.8 s",
+      "+68.1 s"
+    ],
+    "values": [
+      22,
+      28,
+      32,
+      29,
+      31,
+      23,
+      17
+    ],
+    "color": "#64748b",
+    "y_label": "decisions / window",
+    "note": "Uses processed_at_sec (wall-clock monotonic). Separate from timestamp_sec (video time)."
+  },
+  "meta": {
+    "total_evaluated": 182,
+    "total_promoted": 106,
+    "total_suppressed": 76,
+    "promotion_rate": 0.5824,
+    "n_score_bins": 10,
+    "n_time_bins": 7,
+    "cycles_run": null
+  }
+}
